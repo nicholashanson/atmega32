@@ -1,4 +1,4 @@
-              .EQU			SUM = 0x300
+              .EQU      SUM = 0x300
               .ORG			00
               LDI				R16, 0x25
               LDI				R17, $34
