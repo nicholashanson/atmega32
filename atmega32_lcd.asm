@@ -1,32 +1,32 @@
-					.EQU		LCD_DELAY = 5
-					.EQU		LCD_START_UP = 15
-					.EQU		LCD_CLEAR = 0x01
-					.EQU		LCD_HOME = 0x02
-					.EQU		LCD_CURSOR_BACK = 0x10
-					.EQU		LCD_CURSOR_FWD = 0x14
-					.EQU		LCD_PAN_LEFT = 0x18
-					.EQU		LCD_PAN_RIGHT = 0x1C
-					.EQU		LCD_CURSOR_OFF = 0x0C
-					.EQU		LCD_CURSOR_ON = 0x0E
-					.EQU		LCD_CURSOR_BLINK = 0x0F
-					.EQU		LCD_CURSOR_LINE2 = 0xC0
+					.EQU			LCD_DELAY = 5
+					.EQU			LCD_START_UP = 15
+					.EQU			LCD_CLEAR = 0x01
+					.EQU			LCD_HOME = 0x02
+					.EQU			LCD_CURSOR_BACK = 0x10
+					.EQU			LCD_CURSOR_FWD = 0x14
+					.EQU			LCD_PAN_LEFT = 0x18
+					.EQU			LCD_PAN_RIGHT = 0x1C
+					.EQU			LCD_CURSOR_OFF = 0x0C
+					.EQU			LCD_CURSOR_ON = 0x0E
+					.EQU			LCD_CURSOR_BLINK = 0x0F
+					.EQU			LCD_CURSOR_LINE2 = 0xC0
 
-					.EQU		FUNCTION_SET = 0x28
-					.EQU		ENTRY_MODE = 0x06 
-					.EQU		DISPLAY_SETUP = 0x0C 
+					.EQU			FUNCTION_SET = 0x28
+					.EQU			ENTRY_MODE = 0x06 
+					.EQU			DISPLAY_SETUP = 0x0C 
 
-					.EQU		INSTR = 0x00
-					.EQU		DATA = 0x10	
+					.EQU			INSTR = 0x00
+					.EQU			DATA = 0x10	
 
-					.EQU    	LCD_PORT = PORTD
-					.EQU		LCD_DDR = DDRD
-					.EQU		LCD_PWR = 7
-					.EQU		LCD_EN = 6
-					.EQU		LCD_RW = 5
-					.EQU		LCD_RS = 4
+					.EQU    		LCD_PORT = PORTD
+					.EQU			LCD_DDR = DDRD
+					.EQU			LCD_PWR = 7
+					.EQU			LCD_EN = 6
+					.EQU			LCD_RW = 5
+					.EQU			LCD_RS = 4
 					
-					.EQU		NB_LINES = 2
-					.EQU		NB_COL = 16
+					.EQU			NB_LINES = 2
+					.EQU			NB_COL = 16
 
 					;initialize stack
 					LDI			R21, HIGH(RAMEND)
