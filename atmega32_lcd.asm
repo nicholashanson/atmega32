@@ -1,7 +1,7 @@
 					.EQU		LCD_DELAY = 5
 					.EQU		LCD_START_UP = 15
 					.EQU		LCD_CLEAR = 0x01
-				  .EQU		LCD_HOME = 0x02
+					.EQU		LCD_HOME = 0x02
 					.EQU		LCD_CURSOR_BACK = 0x10
 					.EQU		LCD_CURSOR_FWD = 0x14
 					.EQU		LCD_PAN_LEFT = 0x18
