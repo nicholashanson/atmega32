@@ -120,7 +120,7 @@ WRITE_NIBBLE:
 					;bitwise OR LCD_PORT with R21
 					OR			R24, R21
           
-					;set LCD_RS to INSTR
+					;set LCD_RS to INSTR or DATA
 					OR			R24, R22
 					OUT			LCD_PORT, R24
           
