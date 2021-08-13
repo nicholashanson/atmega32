@@ -98,7 +98,7 @@ PUT_CHAR:				LDI			R17, LCD_DELAY
 					LSL			R21
 					LSL			R21
 					LSL			R21
-					CALL				WRITE_NIBBLE
+					CALL			WRITE_NIBBLE
 					RET
 WRITE_NIBBLE:		
           				;right shift R21 (cmd) four times
