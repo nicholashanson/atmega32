@@ -18,7 +18,7 @@
 					.EQU		INSTR = 0x00
 					.EQU		DATA = 0x10	
 
-					.EQU    LCD_PORT = PORTD
+					.EQU    	LCD_PORT = PORTD
 					.EQU		LCD_DDR = DDRD
 					.EQU		LCD_PWR = 7
 					.EQU		LCD_EN = 6
@@ -34,7 +34,7 @@
 					LDI			R21, LOW(RAMEND)
 					OUT			SPL, R21
 
-          ;initialize LCD to 0
+          				;initialize LCD to 0
 					LDI			R21, 0x00
 					OUT			LCD_PORT, R21
 
@@ -47,62 +47,62 @@
           
 					;start-up delay
 					LDI			R17, LCD_START_UP
-					CALL		DELAY
+					CALL			DELAY
           
 					;cmd code 0x32
 					LDI			R21, 0x32
-				  CALL		PUT_CMD
+				 	CALL			PUT_CMD
           
 					;move FUNCTION_SET into R21
 					LDI			R21, FUNCTION_SET
-					CALL		PUT_CMD
+					CALL			PUT_CMD
           
 					;move DISPLAY_SETUP into R21
 					LDI			R21, DISPLAY_SETUP
-					CALL		PUT_CMD
+					CALL			PUT_CMD
           
 					;move LCD_CLEAR into R21
 					LDI			R21, LCD_CLEAR
-					CALL		PUT_CMD
+					CALL			PUT_CMD
           
 					;move ENTRY_MODE into R21
 					LDI			R21, ENTRY_MODE
-					CALL		PUT_CMD
+					CALL			PUT_CMD
 
 					;write message
 					LDI			R21, 'H'
-					CALL		PUT_CHAR
+					CALL			PUT_CHAR
 					LDI			R21, 'i'
-					CALL		PUT_CHAR
+					CALL			PUT_CHAR
 					
 					
-HERE:			RJMP		HERE
+HERE:					RJMP			HERE
 
-PUT_CMD:	LDI			R17, LCD_DELAY
-					CALL		DELAY
+PUT_CMD:				LDI			R17, LCD_DELAY
+					CALL			DELAY
 					LDI			R22, INSTR
-					CALL		WRITE_NIBBLE					
+					CALL			WRITE_NIBBLE					
 					LSL			R21
 					LSL			R21
 					LSL			R21
 					LSL			R21
 					LDI			R17, 1
-					CALL		DELAY
-					CALL		WRITE_NIBBLE
+					CALL			DELAY
+					CALL			WRITE_NIBBLE
 					RET
-PUT_CHAR:	LDI			R17, LCD_DELAY
-					CALL		DELAY
+PUT_CHAR:				LDI			R17, LCD_DELAY
+					CALL			DELAY
 					LDI			R22, DATA
-					CALL		WRITE_NIBBLE
+					CALL			WRITE_NIBBLE
 					LSL			R21
 					LSL			R21
 					LSL			R21
 					LSL			R21
-					CALL		WRITE_NIBBLE
+					CALL				WRITE_NIBBLE
 					RET
 WRITE_NIBBLE:		
-          ;right shift R21 (cmd) four times
-					PUSH		R21
+          				;right shift R21 (cmd) four times
+					PUSH			R21
 					LSR			R21
 					LSR			R21
 					LSR			R21
@@ -134,19 +134,19 @@ WRITE_NIBBLE:
 					CBI			LCD_PORT, LCD_EN
 					POP			R21
 					RET
-SDELAY:		NOP
+SDELAY:					NOP
 					NOP
 					RET
 DELAY_100us:		
-          LDI			R19, 60
-DR0:			CALL		SDELAY
+         	 			LDI			R19, 60
+DR0:					CALL			SDELAY
 					DEC			R19
-					BRNE		DR0
+					BRNE			DR0
 					RET
-DELAY:		LDI			R18, 10				
-LDR0:			CALL		DELAY_100us	
+DELAY:					LDI			R18, 10				
+LDR0:					CALL			DELAY_100us	
 					DEC			R18
-					BRNE		LDR0
+					BRNE			LDR0
 					DEC			R17
-					BRNE		DELAY
+					BRNE			DELAY
 					RET
