@@ -1,6 +1,6 @@
-				.equ			MOSI = 5
-				.equ			SCK = 7
-				.equ			SS = 4
+				.equ				MOSI = 5
+				.equ				SCK = 7
+				.equ				SS = 4
 
 				LDI				R17, HIGH(RAMEND)
 				OUT				SPH, R17
@@ -21,12 +21,12 @@
 				LDI				R17, 0x80
 				OUT				SPDR, R17
 Reg_sel:		
-        SBIS			SPSR, SPIF
-				RJMP			Reg_sel
+        			SBIS				SPSR, SPIF
+				RJMP				Reg_sel
 				LDI				R17, 0x04
 				OUT				SPDR, R17
-Mode:		SBIS			SPSR, SPIF
-				RJMP			Mode
+Mode:				SBIS				SPSR, SPIF
+				RJMP				Mode
 				CBI				PORTB, SS
 
 Read_temp:
@@ -35,17 +35,17 @@ Read_temp:
 				LDI				R17, 0x02
 				OUT				SPDR, R17
 Wait1:
-				SBIS			SPSR, SPIF
-				RJMP			Wait1
+				SBIS				SPSR, SPIF
+				RJMP				Wait1
 				LDI				R17, 0x00
 				OUT				SPDR, R17
 Wait2:
-				SBIS			SPSR, SPIF
-				RJMP			Wait2
+				SBIS				SPSR, SPIF
+				RJMP				Wait2
 				CBI				PORTB, SS
 
-Wait3:	SBIS			SPSR, SPIF
-				RJMP			Wait3
+Wait3:				SBIS				SPSR, SPIF
+				RJMP				Wait3
 
 				IN				R18, SPDR
 
@@ -53,17 +53,17 @@ Wait3:	SBIS			SPSR, SPIF
 				LDI				R17, 0x01
 				OUT				SPDR, R17
 Wait4:
-				SBIS			SPSR, SPIF
-				RJMP			Wait4
+				SBIS				SPSR, SPIF
+				RJMP				Wait4
 				LDI				R17, 0x00
 				OUT				SPDR, R17
-Wait5:	SBIS			SPSR, SPIF
-				RJMP			Wait5
+Wait5:				SBIS				SPSR, SPIF
+				RJMP				Wait5
 
-Wait6:	SBIS			SPSR, SPIF
-				RJMP			Wait6
+Wait6:				SBIS				SPSR, SPIF
+				RJMP				Wait6
 
 				IN				R19, SPDR				
 				CBI				PORTB, SS
 
-				RJMP			Read_temp
+				RJMP				Read_temp
