@@ -44,24 +44,22 @@ Wait2:
 				RJMP				Wait2
 				CBI				PORTB, SS
 
-Wait3:				SBIS				SPSR, SPIF
-				RJMP				Wait3
+
 
 				IN				R18, SPDR
 
 				SBI				PORTB, SS
 				LDI				R17, 0x01
 				OUT				SPDR, R17
-Wait4:
+Wait3:
 				SBIS				SPSR, SPIF
-				RJMP				Wait4
+				RJMP				Wait3
 				LDI				R17, 0x00
 				OUT				SPDR, R17
-Wait5:				SBIS				SPSR, SPIF
-				RJMP				Wait5
+Wait4:				SBIS				SPSR, SPIF
+				RJMP				Wait4
 
-Wait6:				SBIS				SPSR, SPIF
-				RJMP				Wait6
+
 
 				IN				R19, SPDR				
 				CBI				PORTB, SS
