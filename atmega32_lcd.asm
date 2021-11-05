@@ -34,7 +34,7 @@ OUT			SPH, R21
 LDI			R21, LOW(RAMEND)
 OUT			SPL, R21
 
-	;initialize LCD port to 0
+;initialize LCD port to 0
 LDI			R21, 0x00
 OUT			LCD_PORT, R21
 
