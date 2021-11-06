@@ -14,7 +14,7 @@
 ;clearing a bit configures the pin for input
     .EQU			LCD_DDR = DDRB
 
-;this register is used to read the input on the pins of portB; 
+;this register is used to read the input on the pins of portB
     .EQU			LCD_PIN = PINB
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -33,6 +33,8 @@
 ;setting reads
 ;clearing writes
     .EQU			LCD_RW = 1
+;setting the enable line begins an operation
+;clearing the enable line ends an operation 
     .EQU			LCD_EN = 2
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
