@@ -45,53 +45,53 @@
 ;in this section we initialize the stack pointer
 ;in the avr architecture it is necessary to initialize
 ;the stack if you are going to use function calls
-    LDI			R21, HIGH(RAMEND)
-    OUT			SPH, R21
-    LDI			R21, LOW(RAMEND)
-    OUT			SPL, R21
+    LDI			    R21, HIGH(RAMEND)
+    OUT			    SPH, R21
+    LDI			    R21, LOW(RAMEND)
+    OUT			    SPL, R21
 
 ;port configuration
 ;here we set all the pins of the port connected to the LCD
 ;to output mode
-    LDI			R21, 0xFF
-    OUT			LCD_DDR, R21
+    LDI			    R21, 0xFF
+    OUT			    LCD_DDR, R21
 
 ;LCD initialization
 ;here we send a set of commands to initilaize the LCD
 ;during intialization we need to send a set of commands to the LCD
 ;that follow a certain procedure
-    LDI			R16, 0x33
+    LDI			    R16, 0x33
     CALL			CMDWRT
 ;we need to wait 2 ms after writing the previous command before writing
 ;the next one, as stated in the LCD datasheet
     CALL			DELAY_2ms
-    LDI			R16, 0x32
+    LDI			    R16, 0x32
     CALL			CMDWRT
     CALL			DELAY_2ms
 ;this command sets the LCD to four-bit mode
-    LDI			R16, 0x28
+    LDI			    R16, 0x28
     CALL			CMDWRT
-    LDI			R16, 0x0E
+    LDI			    R16, 0x0E
     CALL			CMDWRT
 ;this command clears the display
-    LDI			R16, 0x01
+    LDI			    R16, 0x01
     CALL			CMDWRT
 ;auto-increment cursor and diable shift mode
-    LDI			R16, 0x06
+    LDI			    R16, 0x06
     CALL			CMDWRT
 
 ;initialization of the port used for input from the ADC module
 ;write to the data direction register of port A
 ;to set port pins to input mode
-    LDI			R16, 0x00
-    OUT			DDRA, R16				;set Port A as input for ADC
-    LDI			R16, 0x87  		         	;enable ADC and select ck/128
-    OUT			ADCSRA, R16
-    LDI			R16, 0xE0				;2.56 Vref, ADC0 single-ended
-    OUT			ADMUX, R16				;left-justified data
+    LDI			    R16, 0x00
+    OUT			    DDRA, R16				;set Port A as input for ADC
+    LDI			    R16, 0x87  		         	;enable ADC and select ck/128
+    OUT			    ADCSRA, R16
+    LDI			    R16, 0xE0				;2.56 Vref, ADC0 single-ended
+    OUT			    ADMUX, R16				;left-justified data
 
 READ_ADC:
-    SBI			ADCSRA, ADSC				;start conversion
+    SBI			    ADCSRA, ADSC				;start conversion
 ;we are not sure when the analog to digital conversion will be completed,
 ;so we need to keep polling the corresponding flag to check for completion
 
@@ -104,7 +104,7 @@ KEEP_POLING:
 
 ;conversion has been completed, so clear the flag that indicates completion
 ;this needs to be done before the next conversion
-    SBI			ADCSRA, ADIF				;write 1 to clear ADIF flag
+    SBI			    ADCSRA, ADIF				;write 1 to clear ADIF flag
 ;we left-justified the data, so reading the eight most significant bits 
 ;corresponds to a certain number of shift operations that corresponds to
 ;a certain numerical scaling
@@ -113,15 +113,15 @@ KEEP_POLING:
 ;convert the hexidecimal value to a decimal one
 ;we want a decimnal value because numbers in decimal can be easily converted
 ;to characters that can be displated on the LCD
-    IN			R16, ADCH				;read ADCH for 8 MSB
+    IN			    R16, ADCH				;read ADCH for 8 MSB
     CALL			CONVERT
-    LDI			R16, 0x01
+    LDI			    R16, 0x01
     CALL			CMDWRT
-    MOV			R16, RMND_H
+    MOV			    R16, RMND_H
     CALL			DATAWRT
-    MOV			R16, RMND_M
+    MOV			    R16, RMND_M
     CALL			DATAWRT
-    MOV			R16, RMND_L
+    MOV			    R16, RMND_L
     CALL			DATAWRT
 ;after displaying the temperature on the LCD we now need to jump to the sub-routine
 ;that reads the signal from the temperature sensor to start the process all over again
@@ -132,56 +132,58 @@ KEEP_POLING:
 ;to four bits of the LCD port while leaving the other four bits
 ;unchanged
 CMDWRT:
-;the command we need to write was passed to the function in R16
-MOV			R27, R16
-;we perform a logical AND on the command with 0xF0 to get the high nibble of the command
-ANDI			R27, 0xF0
-;we read in whatever the current values are on the LCD port
-;it is important we do this before writing to the point so that the previous values are not lost
-IN			R26, LCD_PRT
-;we AND whatever values where just read in with 0x0F to get the lower nibble
-ANDI			R26, 0x0F
-;we OR the high nibble of the command and the low nibble of the command to get a combination of the two
-OR			R26, R27
-;we then write this value to the LCD port
-OUT			LCD_PRT, R26
-;to do this, we need clear the register select pin to set the LCD for recieving commands instead of data
-CBI			LCD_PRT, LCD_RS
-;we clear the LCD read/write pin to indicate to the LCD that this is a write operation
-CBI			LCD_PRT, LCD_RW
-;we set the enable command line to begin the operation
-SBI			LCD_PRT, LCD_EN
-;and after a delay
-CALL			SDELAY
-;clear the enable command line to end the operation
-CBI			LCD_PRT, LCD_EN
-CALL			DELAY_100us
-;we now need to repeat the above process with the low nibbe of the command
-;so we move the command into our intermediate register again
-MOV			R27, R16
-;swap the nibble, so low is now high and high is now low
-SWAP			R27
-;as above, AND to get the high nibble
-ANDI			R27, 0xF0
-;read
-IN			R26, LCD_PRT
-;get low nibble
-ANDI			R26, 0x0F
-;combine
-OR			R26, R27
-;write
-OUT			LCD_PRT, R26
-SBI			LCD_PRT, LCD_EN
-CALL			SDELAY
-CBI			LCD_PRT, LCD_EN
-CALL			DELAY_100us
-;return to caller
-RET
+    ;the command we need to write was passed to the function in R16
+    MOV             R27, R16
+    ;we perform a logical AND on the command with 0xF0 to get the high nibble of the command
+    ANDI			R27, 0xF0
+    ;we read in whatever the current values are on the LCD port
+    ;it is important we do this before writing to the point so that the previous values are not lost
+    IN			    R26, LCD_PRT
+    ;we AND whatever values where just read in with 0x0F to get the lower nibble
+    ANDI			R26, 0x0F
+    ;we OR the high nibble of the command and the low nibble of the command to get a combination of the two
+    OR			    R26, R27
+    ;we then write this value to the LCD port
+    OUT			    LCD_PRT, R26
+    ;to do this, we need clear the register select pin to set the LCD for recieving commands instead of data
+    CBI			    LCD_PRT, LCD_RS
+    ;we clear the LCD read/write pin to indicate to the LCD that this is a write operation
+    CBI			    LCD_PRT, LCD_RW
+    ;we set the enable command line to begin the operation
+    SBI			    LCD_PRT, LCD_EN
+    ;and after a delay
+    CALL	        SDELAY
+    ;clear the enable command line to end the operation
+    CBI			    LCD_PRT, LCD_EN
+    CALL		    DELAY_100us
+    ;we now need to repeat the above process with the low nibbe of the command
+    ;so we move the command into our intermediate register again
+    MOV			    R27, R16
+    ;swap the nibble, so low is now high and high is now low
+    SWAP		    R27
+    ;as above, AND to get the high nibble
+    ANDI		    R27, 0xF0
+    ;read
+    IN			    R26, LCD_PRT
+    ;get low nibble
+    ANDI			R26, 0x0F
+    ;combine
+    OR			    R26, R27
+    ;write
+    OUT			    LCD_PRT, R26
+    SBI			    LCD_PRT, LCD_EN
+    CALL			SDELAY
+    CBI			    LCD_PRT, LCD_EN
+    CALL			DELAY_100us
+    ;return to caller
+    RET
 
+;here we follow a pretty similar pattern as we did for the command-write function above
 DATAWRT:
-MOV			R27, R16
-ANDI			R27, 0xF0
-IN			R26, LCD_PRT
+    ;move data into intermediate register
+    MOV			    R27, R16
+    ANDI			R27, 0xF0
+    IN			    R26, LCD_PRT
 ANDI			R26, 0x0F
 OR			R26, R27
 OUT			LCD_PRT, R26
