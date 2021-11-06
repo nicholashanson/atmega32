@@ -166,7 +166,7 @@ CMDWRT:
     ;read
     IN              R26, LCD_PRT
     ;get low nibble
-    ANDI			R26, 0x0F
+    ANDI            R26, 0x0F
     ;combine
     OR              R26, R27
     ;write
