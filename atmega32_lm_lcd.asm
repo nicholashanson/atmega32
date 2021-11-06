@@ -1,4 +1,8 @@
 ;LCD connected to port B
+;basically all we are doing here is taking the three registers in
+;the avr architecture related to port B and assigning them aliases
+;to make the code more readable and maitainable
+;this register is used to write data to the pins of port b
 .EQU			LCD_PRT = PORTB
 ;DDRB is the data direction register for port B
 ;setting a bit configures the pin for output
@@ -7,13 +11,30 @@
 ;this register is used to read the input on the pins of portB; 
 .EQU			LCD_PIN = PINB
 
-;
+;these are the three control lines for the LCD
+;here we are not assigning values to the control lines, rather
+;we are aliasing numbers that can be used when accessing the pins
+;to which the control lines are connected
+;RS stands for register select
+;the LCD can recieve two kinds of data: commands and actual data
+;clearing RS selects the command register
+;setting RS selects the data register
 .EQU			LCD_RS = 0
+;read/write control line
+;setting reads
+;clearing writes
 .EQU			LCD_RW = 1
 .EQU			LCD_EN = 2
 
+;in this section we are assigning aliases 
+;to certain registers
 ;hexidecimal to decimal conversion
+;HEX_NUM is now an alias for register R25
+;this is where the hexidecminal number, the target for
+;conversion, is stored
 .def			HEX_NUM = R25
+;these registers are used to store intermediate variables
+;that are used in the conversion process
 .def			RMND_L = R19
 .def			RMND_M = R20
 .def			RMND_H = R21
@@ -21,11 +42,17 @@
 .def			DENOMINATOR = R23
 .def			QUOTIENT = R24
 
+;in this section we initialize the stack pointer
+;in the avr architecture it is necessary to initialize
+;the stack if you are going to use function calls
 LDI			R21, HIGH(RAMEND)
 OUT			SPH, R21
 LDI			R21, LOW(RAMEND)
 OUT			SPL, R21
 
+;port configuration
+;here we set all the pins of the port connected to the LCD
+;to output mode
 LDI			R21, 0xFF
 OUT			LCD_DDR, R21
 
