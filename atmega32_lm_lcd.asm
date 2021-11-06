@@ -127,34 +127,55 @@ KEEP_POLING:
 ;that reads the signal from the temperature sensor to start the process all over again
     RJMP			READ_ADC
 
-CMDWRT:				
+;this function write a command to the LCD
+;we are using the LCD in four-bit mode, so we only want to write the
+;to four bits of the LCD port while leaving the other four bits
+;unchanged
+CMDWRT:
+;the command we need to write was passed to the function in R16
 MOV			R27, R16
+;we perform a logical AND on the command with 0xF0 to get the high nibble of the command
 ANDI			R27, 0xF0
+;we read in whatever the current values are on the LCD port
+;it is important we do this before writing to the point so that the previous values are not lost
 IN			R26, LCD_PRT
+;we AND whatever values where just read in with 0x0F to get the lower nibble
 ANDI			R26, 0x0F
+;we OR the high nibble of the command and the low nibble of the command to get a combination of the two
 OR			R26, R27
+;we then write this value to the LCD port
 OUT			LCD_PRT, R26
+;to do this, we need clear the register select pin to set the LCD for recieving commands instead of data
 CBI			LCD_PRT, LCD_RS
+;we clear the LCD read/write pin to indicate to the LCD that this is a write operation
 CBI			LCD_PRT, LCD_RW
+;we set the enable command line to begin the operation
 SBI			LCD_PRT, LCD_EN
+;and after a delay
 CALL			SDELAY
+;clear the enable command line to end the operation
 CBI			LCD_PRT, LCD_EN
-
 CALL			DELAY_100us
-
+;we now need to repeat the above process with the low nibbe of the command
+;so we move the command into our intermediate register again
 MOV			R27, R16
+;swap the nibble, so low is now high and high is now low
 SWAP			R27
+;as above, AND to get the high nibble
 ANDI			R27, 0xF0
+;read
 IN			R26, LCD_PRT
+;get low nibble
 ANDI			R26, 0x0F
+;combine
 OR			R26, R27
+;write
 OUT			LCD_PRT, R26
 SBI			LCD_PRT, LCD_EN
 CALL			SDELAY
 CBI			LCD_PRT, LCD_EN
-
 CALL			DELAY_100us
-
+;return to caller
 RET
 
 DATAWRT:
