@@ -1,6 +1,9 @@
+;LCD connected to port B
 .EQU			LCD_PRT = PORTB
 .EQU			LCD_DDR = DDRB
 .EQU			LCD_PIN = PINB
+
+;
 .EQU			LCD_RS = 0
 .EQU			LCD_RW = 1
 .EQU			LCD_EN = 2
