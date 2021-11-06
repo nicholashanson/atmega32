@@ -140,41 +140,41 @@ CMDWRT:
     ;it is important we do this before writing to the point so that the previous values are not lost
     IN              R26, LCD_PRT
     ;we AND whatever values where just read in with 0x0F to get the lower nibble
-    ANDI			R26, 0x0F
+    ANDI            R26, 0x0F
     ;we OR the high nibble of the command and the low nibble of the command to get a combination of the two
-    OR			    R26, R27
+    OR              R26, R27
     ;we then write this value to the LCD port
-    OUT			    LCD_PRT, R26
+    OUT             LCD_PRT, R26
     ;to do this, we need clear the register select pin to set the LCD for recieving commands instead of data
-    CBI			    LCD_PRT, LCD_RS
+    CBI             LCD_PRT, LCD_RS
     ;we clear the LCD read/write pin to indicate to the LCD that this is a write operation
-    CBI			    LCD_PRT, LCD_RW
+    CBI             LCD_PRT, LCD_RW
     ;we set the enable command line to begin the operation
-    SBI			    LCD_PRT, LCD_EN
+    SBI             LCD_PRT, LCD_EN
     ;and after a delay
-    CALL	        SDELAY
+    CALL            SDELAY
     ;clear the enable command line to end the operation
-    CBI			    LCD_PRT, LCD_EN
-    CALL		    DELAY_100us
+    CBI             LCD_PRT, LCD_EN
+    CALL            DELAY_100us
     ;we now need to repeat the above process with the low nibbe of the command
     ;so we move the command into our intermediate register again
-    MOV			    R27, R16
+    MOV             R27, R16
     ;swap the nibble, so low is now high and high is now low
-    SWAP		    R27
+    SWAP            R27
     ;as above, AND to get the high nibble
-    ANDI		    R27, 0xF0
+    ANDI            R27, 0xF0
     ;read
-    IN			    R26, LCD_PRT
+    IN              R26, LCD_PRT
     ;get low nibble
     ANDI			R26, 0x0F
     ;combine
-    OR			    R26, R27
+    OR              R26, R27
     ;write
-    OUT			    LCD_PRT, R26
-    SBI			    LCD_PRT, LCD_EN
-    CALL			SDELAY
-    CBI			    LCD_PRT, LCD_EN
-    CALL			DELAY_100us
+    OUT             LCD_PRT, R26
+    SBI             LCD_PRT, LCD_EN
+    CALL            SDELAY
+    CBI             LCD_PRT, LCD_EN
+    CALL            DELAY_100us
     ;return to caller
     RET
 
