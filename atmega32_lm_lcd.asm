@@ -170,7 +170,7 @@ KEEP_POLING:
 ;we are using the LCD in four-bit mode, so we want to split the command into two nibbles
 ;in the first half of the function we write the first nibble
 ;and in the second half of the function we write the second nibble
-;we use a combination of logic operations that allows to write the nibble while leaving
+;we use a combination of logic operations that allows us to write the nibble while leaving
 ;the other four bits of the port unchanged (these other bits are used for the command lines)
 CMDWRT:
     ;the command we need to write was passed to the function in R16
