@@ -40,14 +40,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;REGISTER DEFINITIONS;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;here we have two delay functions
-;these are necessary to allow for proper functioning of the LCD
-;in this section we are assigning aliases 
-;to certain registers
-;hexidecimal to decimal conversion
+;in this section we are assigning aliases to certain registers
+
 ;HEX_NUM is now an alias for register R25
-;this is where the hexidecminal number, the target for
-;conversion, is stored
+;this is where the hexidecminal number, the target for hexidecimal to 
+;decimal conversion, is stored
     .def			HEX_NUM = R25
 ;these registers are used to store intermediate variables
 ;that are used in the conversion process
@@ -61,8 +58,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;STACK INITIALIZATION;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;here we have two delay functions
-;these are necessary to allow for proper functioning of the LCD
 ;in this section we initialize the stack pointer
 ;in the avr architecture it is necessary to initialize
 ;the stack if you are going to use function calls
@@ -109,8 +104,7 @@
 ;;;;;;;;;;;;;;;;;ADC INITIALIZATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;initialization of the port used for input from the ADC module
-;write to the data direction register of port A
-;to set port pins to input mode
+;write to the data-direction-register of port A to set port pins to input mode
     LDI			    R16, 0x00
     OUT			    DDRA, R16				;set Port A as input for ADC
     LDI			    R16, 0x87  		        ;enable ADC and select ck/128
@@ -121,12 +115,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;MAIN LOOP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;this is the main loop of the program
+;we want to read the temperature from the sensor, convert it from analog to digital,
+;convert that hexidecimal value to decimal, then write that number to the LCD
+;to do this we set up a main loop that reads from the ADC, waits for a result,
+;calls convert, displays, and then repeats
 READ_ADC:
     SBI			    ADCSRA, ADSC				;start conversion
 ;we are not sure when the analog to digital conversion will be completed,
 ;so we need to keep polling the corresponding flag to check for completion
 
-;this is an inner-loop inside the main loop READ_ADC that waits for the
+;this is an inner-loop inside the main loop that waits for the
 ;AD conversion to complete
 KEEP_POLING:
     SBIS			ADCSRA, ADIF				;end of conversion?
@@ -137,12 +136,11 @@ KEEP_POLING:
     SBI			    ADCSRA, ADIF				;write 1 to clear ADIF flag
 ;we left-justified the data, so reading the eight most significant bits 
 ;corresponds to a certain number of shift operations that corresponds to
-;a certain numerical scaling
-;we move this data from the temperature sensor into a general purpose
-;register that is then accessed by the conversion function (CONVERT) to
-;convert the hexidecimal value to a decimal one
-;we want a decimnal value because numbers in decimal can be easily converted
-;to characters that can be displated on the LCD
+;a certain numerical scaling, meaning that we no longer need to the least significant bits
+;we move this data from the temperature sensor into a general purpose register that is then 
+;accessed by the conversion function (CONVERT) to convert the hexidecimal value to a decimal one
+;we want a decimnal value because numbers in decimal can be easily converted to 
+;characters that can be displated on the LCD
     IN			    R16, ADCH				;read ADCH for 8 MSB
     CALL			CONVERT
     LDI			    R16, 0x01
@@ -153,9 +151,11 @@ KEEP_POLING:
     CALL			DATAWRT
     MOV			    R16, RMND_L
     CALL			DATAWRT
-;after displaying the temperature on the LCD we now need to jump to the sub-routine
-;that reads the signal from the temperature sensor to start the process all over again
+;after displaying the temperature on the LCD we now need to jump to the
+;start of the main loop to start the process all over again
     RJMP			READ_ADC
+    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;FUNCTIONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD COMMAND WRITE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
