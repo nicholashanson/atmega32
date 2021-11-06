@@ -89,14 +89,19 @@ LDI			R16, 0x87  		         	;enable ADC and select ck/128
 OUT			ADCSRA, R16
 LDI			R16, 0xE0				;2.56 Vref, ADC0 single-ended
 OUT			ADMUX, R16				;left-justified data
+
 READ_ADC:
 SBI			ADCSRA, ADSC				;start conversion
 ;we are not sure when the analog to digital conversion will be completed,
 ;so we need to keep polling the corresponding flag to check for completion
+
+;this is an inner-loop inside the main loop READ_ADC that waits for the
+;AD conversion to complete
 KEEP_POLING:
-SBIS			ADCSRA, ADIF				;end of conversion?
+  SBIS			ADCSRA, ADIF				;end of conversion?
 ;if conversion has not been completed then jump to the beginning of the loop
-RJMP			KEEP_POLING
+  RJMP			KEEP_POLING
+
 ;conversion has been completed, so clear the flag that indicates completion
 ;this needs to be done before the next conversion
 SBI			ADCSRA, ADIF				;write 1 to clear ADIF flag
