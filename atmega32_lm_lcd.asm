@@ -56,21 +56,33 @@ OUT			SPL, R21
 LDI			R21, 0xFF
 OUT			LCD_DDR, R21
 
+;LCD initialization
+;here we send a set of commands to initilaize the LCD
+;during intialization we need to send a set of commands to the LCD
+;that follow a certain procedure
 LDI			R16, 0x33
 CALL			CMDWRT
+;we need to wait 2 ms after writing the previous command before writing
+;the next one, as stated in the LCD datasheet
 CALL			DELAY_2ms
 LDI			R16, 0x32
 CALL			CMDWRT
 CALL			DELAY_2ms
+;this command sets the LCD to four-bit mode
 LDI			R16, 0x28
 CALL			CMDWRT
 LDI			R16, 0x0E
 CALL			CMDWRT
+;this command clears the display
 LDI			R16, 0x01
 CALL			CMDWRT
+;auto-increment cursor and diable shift mode
 LDI			R16, 0x06
 CALL			CMDWRT
 
+;initialization of the port used for input from the ADC module
+;write to the data direction register of port A
+;to set port pins to input mode
 LDI			R16, 0x00
 OUT			DDRA, R16				;set Port A as input for ADC
 LDI			R16, 0x87  		         	;enable ADC and select ck/128
@@ -79,10 +91,23 @@ LDI			R16, 0xE0				;2.56 Vref, ADC0 single-ended
 OUT			ADMUX, R16				;left-justified data
 READ_ADC:
 SBI			ADCSRA, ADSC				;start conversion
+;we are not sure when the analog to digital conversion will be completed,
+;so we need to keep polling the corresponding flag to check for completion
 KEEP_POLING:
 SBIS			ADCSRA, ADIF				;end of conversion?
+;if conversion has not been completed then jump to the beginning of the loop
 RJMP			KEEP_POLING
+;conversion has been completed, so clear the flag that indicates completion
+;this needs to be done before the next conversion
 SBI			ADCSRA, ADIF				;write 1 to clear ADIF flag
+;we left-justified the data, so reading the eight most significant bits 
+;corresponds to a certain number of shift operations that corresponds to
+;a certain numerical scaling
+;we move this data from the temperature sensor into a general purpose
+;register that is then accessed by the conversion function (CONVERT) to
+;convert the hexidecimal value to a decimal one
+;we want a decimnal value because numbers in decimal can be easily converted
+;to characters that can be displated on the LCD
 IN			R16, ADCH				;read ADCH for 8 MSB
 CALL			CONVERT
 LDI			R16, 0x01
@@ -93,6 +118,8 @@ MOV			R16, RMND_M
 CALL			DATAWRT
 MOV			R16, RMND_L
 CALL			DATAWRT
+;after displaying the temperature on the LCD we now need to jump to the sub-routine
+;that reads the signal from the temperature sensor to start the process all over again
 RJMP			READ_ADC
 
 CMDWRT:				
