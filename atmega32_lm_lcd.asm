@@ -174,6 +174,8 @@ KEEP_POLING:
 ;the other four bits of the port unchanged (these other bits are used for the command lines)
 CMDWRT:
     ;the command we need to write was passed to the function in R16
+    ;we want to move it to an intermediate register so we can modify it's contents but
+    ;still get back the original value later
     MOV             R27, R16
     ;we perform a logical AND on the command with 0xF0 to get the high nibble of the command
     ANDI            R27, 0xF0
