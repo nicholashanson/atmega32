@@ -135,10 +135,10 @@ CMDWRT:
     ;the command we need to write was passed to the function in R16
     MOV             R27, R16
     ;we perform a logical AND on the command with 0xF0 to get the high nibble of the command
-    ANDI			R27, 0xF0
+    ANDI            R27, 0xF0
     ;we read in whatever the current values are on the LCD port
     ;it is important we do this before writing to the point so that the previous values are not lost
-    IN			    R26, LCD_PRT
+    IN              R26, LCD_PRT
     ;we AND whatever values where just read in with 0x0F to get the lower nibble
     ANDI			R26, 0x0F
     ;we OR the high nibble of the command and the low nibble of the command to get a combination of the two
