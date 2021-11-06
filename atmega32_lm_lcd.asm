@@ -1,6 +1,10 @@
 ;LCD connected to port B
 .EQU			LCD_PRT = PORTB
+;DDRB is the data direction register for port B
+;setting a bit configures the pin for output
+;clearing a bit configures the pin for input
 .EQU			LCD_DDR = DDRB
+;this register is used to read the input on the pins of portB; 
 .EQU			LCD_PIN = PINB
 
 ;
@@ -8,7 +12,7 @@
 .EQU			LCD_RW = 1
 .EQU			LCD_EN = 2
 
-;hex to dec conversion
+;hexidecimal to decimal conversion
 .def			HEX_NUM = R25
 .def			RMND_L = R19
 .def			RMND_M = R20
