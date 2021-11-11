@@ -238,12 +238,12 @@ DATAWRT:
     ;here we are writing data and not a command, so we want to set the register select control line
     SBI			    LCD_PRT, LCD_RS
     ;clear read/write control line to perform a write
-    CBI			    LCD_PRT, LCD_RW
+    CBI             LCD_PRT, LCD_RW
     ;begin write
     SBI             LCD_PRT, LCD_EN
     CALL			SDELAY
     ;end write
-    CB  			LCD_PRT, LCD_EN
+    CB              LCD_PRT, LCD_EN
     CALL            DELAY_100us
     MOV             R27, R16
     SWAP            R27
