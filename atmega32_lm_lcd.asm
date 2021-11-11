@@ -65,18 +65,18 @@
 ;in this section we initialize the stack pointer
 ;in the avr architecture it is necessary to initialize
 ;the stack if you are going to use function calls
-    LDI                     R21, HIGH(RAMEND)
-    OUT                     SPH, R21
-    LDI                     R21, LOW(RAMEND)
-    OUT                     SPL, R21
+    LDI                         R21, HIGH(RAMEND)
+    OUT                         SPH, R21
+    LDI                         R21, LOW(RAMEND)
+    OUT                         SPL, R21
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD PORT CONFIGURATION;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;here we set all the pins of the port connected to the LCD
 ;to output mode
-    LDI			    R21, 0xFF
-    OUT			    LCD_DDR, R21
+    LDI			                R21, 0xFF
+    OUT			                LCD_DDR, R21
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD INITIALIZATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;
