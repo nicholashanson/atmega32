@@ -8,7 +8,7 @@
 ;the avr architecture related to port B and assigning them aliases
 ;to make the code more readable and maitainable
 
-;this register is used to write data to the pins of port b
+;this register is used to write data to the pins of port B
     .EQU            LCD_PRT = PORTB
 
 ;DDRB is the data direction register for port B
@@ -16,7 +16,7 @@
 ;clearing a bit configures the pin for input
     .EQU            LCD_DDR = DDRB
 
-;this register is used to read the input on the pins of portB
+;this register is used to read the input on the pins of port B
     .EQU            LCD_PIN = PINB
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
