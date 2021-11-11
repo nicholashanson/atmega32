@@ -234,14 +234,14 @@ DATAWRT:
     IN              R26, LCD_PRT
     ANDI            R26, 0x0F
     OR              R26, R27
-    OUT			    LCD_PRT, R26
+    OUT             LCD_PRT, R26
     ;here we are writing data and not a command, so we want to set the register select control line
     SBI             LCD_PRT, LCD_RS
     ;clear read/write control line to perform a write
     CBI             LCD_PRT, LCD_RW
     ;begin write
     SBI             LCD_PRT, LCD_EN
-    CALL			SDELAY
+    CALL            SDELAY
     ;end write
     CB              LCD_PRT, LCD_EN
     CALL            DELAY_100us
