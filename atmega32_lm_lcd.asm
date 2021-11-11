@@ -127,19 +127,19 @@
 ;to do this we set up a main loop that reads from the ADC, waits for a result,
 ;calls convert, displays, and then repeats
 READ_ADC:
-    SBI			        ADCSRA, ADSC				;start conversion
+    SBI                 ADCSRA, ADSC				;start conversion
 ;we are not sure when the analog to digital conversion will be completed,
 ;so we need to keep polling the corresponding flag to check for completion
 
 ;this is an inner-loop inside the main loop that waits for the
 ;AD conversion to complete
 KEEP_POLING:
-    SBIS			    ADCSRA, ADIF				;end of conversion?
+    SBIS                ADCSRA, ADIF				;end of conversion?
 ;if conversion has not been completed then jump to the beginning of the loop
-    RJMP			    KEEP_POLING
+    RJMP                KEEP_POLING
 ;conversion has been completed, so clear the flag that indicates completion
 ;this needs to be done before the next conversion
-    SBI			        ADCSRA, ADIF				;write 1 to clear ADIF flag
+    SBI                 ADCSRA, ADIF				;write 1 to clear ADIF flag
 ;we left-justified the data, so reading the eight most significant bits 
 ;corresponds to a certain number of shift operations that corresponds to
 ;a certain numerical scaling, meaning that we no longer need to the least significant bits
@@ -147,16 +147,16 @@ KEEP_POLING:
 ;accessed by the conversion function (CONVERT) to convert the hexidecimal value to a decimal one
 ;we want a decimnal value because numbers in decimal can be easily converted to 
 ;characters that can be displated on the LCD
-    IN			        R16, ADCH				;read ADCH for 8 MSB
-    CALL			    CONVERT
-    LDI			        R16, 0x01
-    CALL			CMDWRT
-    MOV			    R16, RMND_H
-    CALL			DATAWRT
-    MOV			    R16, RMND_M
-    CALL			DATAWRT
-    MOV			    R16, RMND_L
-    CALL			DATAWRT
+    IN                  R16, ADCH				;read ADCH for 8 MSB
+    CALL                CONVERT
+    LDI                 R16, 0x01
+    CALL                CMDWRT
+    MOV                 R16, RMND_H
+    CALL                DATAWRT
+    MOV                 R16, RMND_M
+    CALL                DATAWRT
+    MOV                 R16, RMND_L
+    CALL                DATAWRT
 ;after displaying the temperature on the LCD we now need to jump to the
 ;start of the main loop to start the process all over again
     RJMP			READ_ADC
@@ -236,7 +236,7 @@ DATAWRT:
     OR              R26, R27
     OUT			    LCD_PRT, R26
     ;here we are writing data and not a command, so we want to set the register select control line
-    SBI			    LCD_PRT, LCD_RS
+    SBI             LCD_PRT, LCD_RS
     ;clear read/write control line to perform a write
     CBI             LCD_PRT, LCD_RW
     ;begin write
@@ -269,52 +269,52 @@ SDELAY:
     RET
 
 DELAY_100us:			
-    PUSH			R17
-    LDI			R17, 60
+    PUSH            R17
+    LDI             R17, 60
 DR0:				
-    CALL			SDELAY
-    DEC			R17
-    BRNE			DR0
-    POP			R17
+    CALL            SDELAY
+    DEC             R17
+    BRNE            DR0
+    POP             R17
     RET
 
 DELAY_2ms:			
-    PUSH			R17
-    LDI			R17, 20
+    PUSH            R17
+    LDI             R17, 20
 LDR0:				
-    CALL			DELAY_100us
-    DEC			R17
-    BRNE			LDR0
-    POP			R17
+    CALL            DELAY_100us
+    DEC             R17
+    BRNE            LDR0
+    POP             R17
     RET
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;HEX TO DEC CONVERSION;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 CONVERT:			
-MOV			NUM, R16
-LDI			DENOMINATOR, 10
+    MOV             NUM, R16
+    LDI             DENOMINATOR, 10
 L1:				
-INC			QUOTIENT
-SUB			NUM, DENOMINATOR
-BRCC			L1
-DEC			QUOTIENT
-ADD			NUM, DENOMINATOR
-MOV			RMND_L, NUM
-MOV			NUM, QUOTIENT
-LDI			QUOTIENT, 0
+    INC             QUOTIENT
+    SUB             NUM, DENOMINATOR
+    BRCC            L1
+    DEC             QUOTIENT
+    ADD             NUM, DENOMINATOR
+    MOV             RMND_L, NUM
+    MOV             NUM, QUOTIENT
+    LDI             QUOTIENT, 0
 L2:				
-INC			QUOTIENT
-SUB			NUM, DENOMINATOR
-BRCC			L2
-DEC			QUOTIENT
-ADD			NUM, DENOMINATOR
-MOV			RMND_M, NUM
-MOV			RMND_H, QUOTIENT
-LDI			R31, 0x30
-OR			RMND_L, R31
-OR			RMND_M, R31
-OR			RMND_H, R31
-RET
+    INC             QUOTIENT
+    SUB             NUM, DENOMINATOR
+    BRCC            L2
+    DEC             QUOTIENT
+    ADD             NUM, DENOMINATOR
+    MOV             RMND_M, NUM
+    MOV             RMND_H, QUOTIENT
+    LDI             R31, 0x30
+    OR              RMND_L, R31
+    OR              RMND_M, R31
+    OR              RMND_H, R31
+    RET
 
 
