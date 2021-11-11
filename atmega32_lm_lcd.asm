@@ -111,7 +111,7 @@
 ;write to the data-direction-register of port A to set port pins to input mode
     LDI			        R16, 0x00
     OUT			        DDRA, R16				;set Port A as input for ADC
-    LDI			        R16, 0x87  		        ;enable ADC and select ck/128
+    LDI			        R16, 0x87               ;enable ADC and select ck/128
     OUT			        ADCSRA, R16
     LDI			        R16, 0xE0				;2.56 Vref, ADC0 single-ended
     OUT			        ADMUX, R16				;left-justified data
@@ -159,7 +159,7 @@ KEEP_POLING:
     CALL                DATAWRT
 ;after displaying the temperature on the LCD we now need to jump to the
 ;start of the main loop to start the process all over again
-    RJMP			READ_ADC
+    RJMP                READ_ADC
     
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;FUNCTIONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
