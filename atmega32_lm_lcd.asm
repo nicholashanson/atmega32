@@ -291,12 +291,17 @@ LDR0:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;HEX TO DEC CONVERSION;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CONVERT:			
+;convert hexidecimal number to decimal number
+CONVERT:
+    ;hexicdecimal value is passed to the function in R16
     MOV             NUM, R16
+    ;load 10 into the denominator register
     LDI             DENOMINATOR, 10
-L1:				
+L1:	
+    ;increment the value stored in the quotient register
     INC             QUOTIENT
     SUB             NUM, DENOMINATOR
+    ;branch if carry cleared
     BRCC            L1
     DEC             QUOTIENT
     ADD             NUM, DENOMINATOR
