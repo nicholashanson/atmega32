@@ -9,15 +9,15 @@
 ;to make the code more readable and maitainable
 
 ;this register is used to write data to the pins of port b
-    .EQU			LCD_PRT = PORTB
+    .EQU            LCD_PRT = PORTB
 
 ;DDRB is the data direction register for port B
 ;setting a bit configures the pin for output
 ;clearing a bit configures the pin for input
-    .EQU			LCD_DDR = DDRB
+    .EQU            LCD_DDR = DDRB
 
 ;this register is used to read the input on the pins of portB
-    .EQU			LCD_PIN = PINB
+    .EQU            LCD_PIN = PINB
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD COMMAND LINES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -30,14 +30,14 @@
 ;the LCD can recieve two kinds of data: commands and actual data
 ;clearing RS selects the command register
 ;setting RS selects the data register
-    .EQU			LCD_RS = 0
+    .EQU            LCD_RS = 0
 ;read/write control line
 ;setting reads
 ;clearing writes
-    .EQU			LCD_RW = 1
+    .EQU            LCD_RW = 1
 ;setting the enable line begins an operation
 ;clearing the enable line ends an operation 
-    .EQU			LCD_EN = 2
+    .EQU            LCD_EN = 2
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;REGISTER DEFINITIONS;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,10 +65,10 @@
 ;in this section we initialize the stack pointer
 ;in the avr architecture it is necessary to initialize
 ;the stack if you are going to use function calls
-    LDI                         R21, HIGH(RAMEND)
-    OUT                         SPH, R21
-    LDI                         R21, LOW(RAMEND)
-    OUT                         SPL, R21
+    LDI             R21, HIGH(RAMEND)
+    OUT             SPH, R21
+    LDI             R21, LOW(RAMEND)
+    OUT             SPL, R21
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD PORT CONFIGURATION;;;;;;;;;;;;;;;;;;;;;;;;
