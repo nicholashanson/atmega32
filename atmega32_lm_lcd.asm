@@ -75,8 +75,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;here we set all the pins of the port connected to the LCD
 ;to output mode
-    LDI			                R21, 0xFF
-    OUT			                LCD_DDR, R21
+    LDI                 R21, 0xFF
+    OUT                 LCD_DDR, R21
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;LCD INITIALIZATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;
