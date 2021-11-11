@@ -127,19 +127,19 @@
 ;to do this we set up a main loop that reads from the ADC, waits for a result,
 ;calls convert, displays, and then repeats
 READ_ADC:
-    SBI			    ADCSRA, ADSC				;start conversion
+    SBI			        ADCSRA, ADSC				;start conversion
 ;we are not sure when the analog to digital conversion will be completed,
 ;so we need to keep polling the corresponding flag to check for completion
 
 ;this is an inner-loop inside the main loop that waits for the
 ;AD conversion to complete
 KEEP_POLING:
-    SBIS			ADCSRA, ADIF				;end of conversion?
+    SBIS			    ADCSRA, ADIF				;end of conversion?
 ;if conversion has not been completed then jump to the beginning of the loop
-    RJMP			KEEP_POLING
+    RJMP			    KEEP_POLING
 ;conversion has been completed, so clear the flag that indicates completion
 ;this needs to be done before the next conversion
-    SBI			    ADCSRA, ADIF				;write 1 to clear ADIF flag
+    SBI			        ADCSRA, ADIF				;write 1 to clear ADIF flag
 ;we left-justified the data, so reading the eight most significant bits 
 ;corresponds to a certain number of shift operations that corresponds to
 ;a certain numerical scaling, meaning that we no longer need to the least significant bits
@@ -147,9 +147,9 @@ KEEP_POLING:
 ;accessed by the conversion function (CONVERT) to convert the hexidecimal value to a decimal one
 ;we want a decimnal value because numbers in decimal can be easily converted to 
 ;characters that can be displated on the LCD
-    IN			    R16, ADCH				;read ADCH for 8 MSB
-    CALL			CONVERT
-    LDI			    R16, 0x01
+    IN			        R16, ADCH				;read ADCH for 8 MSB
+    CALL			    CONVERT
+    LDI			        R16, 0x01
     CALL			CMDWRT
     MOV			    R16, RMND_H
     CALL			DATAWRT
