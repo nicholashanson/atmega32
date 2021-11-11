@@ -84,24 +84,24 @@
 ;here we send a set of commands to initilaize the LCD
 ;during intialization we need to send a set of commands to the LCD
 ;that follow a certain procedure
-    LDI			    R16, 0x33
+    LDI			        R16, 0x33
     CALL			CMDWRT
 ;we need to wait 2 ms after writing the previous command before writing
 ;the next one, as stated in the LCD datasheet
     CALL			DELAY_2ms
-    LDI			    R16, 0x32
+    LDI			        R16, 0x32
     CALL			CMDWRT
     CALL			DELAY_2ms
 ;this command sets the LCD to four-bit mode
-    LDI			    R16, 0x28
+    LDI			        R16, 0x28
     CALL			CMDWRT
-    LDI			    R16, 0x0E
+    LDI			        R16, 0x0E
     CALL			CMDWRT
 ;this command clears the display
-    LDI			    R16, 0x01
+    LDI			        R16, 0x01
     CALL			CMDWRT
 ;auto-increment cursor and diable shift mode
-    LDI			    R16, 0x06
+    LDI			        R16, 0x06
     CALL			CMDWRT
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
