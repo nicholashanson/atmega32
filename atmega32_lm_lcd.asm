@@ -146,7 +146,7 @@ KEEP_POLING:
 ;we move this data from the temperature sensor into a general purpose register that is then 
 ;accessed by the conversion function (CONVERT) to convert the hexidecimal value to a decimal one
 ;we want a decimnal value because numbers in decimal can be easily converted to 
-;characters that can be displated on the LCD
+;characters that can be displayed on the LCD
     IN                  R16, ADCH				;read ADCH for 8 MSB
     CALL                CONVERT
     LDI                 R16, 0x01
